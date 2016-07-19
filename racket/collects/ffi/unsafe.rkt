@@ -122,6 +122,12 @@
    [(not name) (ffi-lib name)] ; #f => NULL => open this executable
    [(not (or (string? name) (path? name)))
     (raise-argument-error 'ffi-lib "(or/c string? path?)" name)]
+   [(not (or (string? version/s)
+             (and (list? version/s)
+                  (andmap (λ (x) (or (not x) (string? x))) version/s))))
+    (raise-argument-error 'ffi-lib
+                          "(or/c string? (listof (or/c string? #f)))"
+                          version/s)]
    [else
     ;; A possible way that this might be misleading: say that there is a
     ;; "foo.so" file in the current directory, which refers to some
